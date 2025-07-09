@@ -1,0 +1,25 @@
+name: Uruchom codzienny skrypt
+
+on:
+  schedule:
+    - cron: '31 18 * * *'   # 6:00 UTC = 8:00 CEST
+  workflow_dispatch:  # pozwala też odpalać ręcznie
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Zainstaluj Pythona
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Zainstaluj zależności (jeśli masz requirements.txt)
+      run: |
+        pip install -r requirements.txt || true
+
+    - name: Uruchom skrypt
+      run: python main.py
