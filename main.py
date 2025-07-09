@@ -2,9 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import smtplib
 from email.message import EmailMessage
+import os
 
-MY_EMAIL = "klaudiasyfireklamy@gmail.com"
-PASSWORD = "dfbg wlnj wqft lwna"
+MY_EMAIL = os.environ["FROM_EMAIL_ADDRESS"]
+PASSWORD = os.environ["FROM_EMAIL_PASSWORD"]
 product_url = "https://ubranesklep.pl/produkt/8385/sukienka"
 
 response = requests.get(product_url)
