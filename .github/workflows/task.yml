@@ -23,9 +23,6 @@ jobs:
     - name: Zainstaluj requests
       run: pip install bs4
 
-    - name: Zainstaluj requests
-      run: pip install email.meassage
-
     - name: Zainstaluj zależności (jeśli masz requirements.txt)
       run: |
         pip install -r requirements.txt || true
