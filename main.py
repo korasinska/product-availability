@@ -23,7 +23,7 @@ msg["From"] = MY_EMAIL
 msg["To"] = "klaudiaorasinska@gmail.com"
 msg.set_content(f"Produkt na który czekasz w rozmiarze {size} znów jest dostępny w sprzedaży!<3\nLINK: {product_url}")
 
-if not option or "S" not in option:
+if not option or size not in option:
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
         connection.login(user=MY_EMAIL, password=PASSWORD)
