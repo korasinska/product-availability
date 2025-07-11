@@ -6,22 +6,24 @@ import os
 
 MY_EMAIL = os.environ["FROM_EMAIL_ADDRESS"]
 PASSWORD = os.environ["FROM_EMAIL_PASSWORD"]
-product_url = "https://ubranesklep.pl/produkt/8385/sukienka"
+product_url = "https://ubranesklep.pl/produkt/7740/spodnie-nico"
+size = "S"
 
 response = requests.get(product_url)
 html = response.text
 
 soup = BeautifulSoup(html, "html.parser")
 
-not_available_alert = soup.select_one("div.alert")
+option = soup.select_one("select#inventory_id > option").getText()
+
 
 msg = EmailMessage()
 msg["Subject"] = "Produkt znów dostępny!"
 msg["From"] = MY_EMAIL
 msg["To"] = "klaudiaorasinska@gmail.com"
-msg.set_content(f"Produkt na który czekasz znów jest dostępny w sprzedaży!<3\nLINK: {product_url}")
+msg.set_content(f"Produkt na który czekasz w rozmiarze {size} znów jest dostępny w sprzedaży!<3\nLINK: {product_url}")
 
-if not not_available_alert:
+if not option or "S" not in option:
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
         connection.login(user=MY_EMAIL, password=PASSWORD)
