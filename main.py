@@ -14,7 +14,7 @@ html = response.text
 
 soup = BeautifulSoup(html, "html.parser")
 
-option = soup.select_one("select#inventory_id > option").getText()
+option = soup.select_one("select#inventory_id > option")
 
 
 msg = EmailMessage()
@@ -23,7 +23,7 @@ msg["From"] = MY_EMAIL
 msg["To"] = "klaudiaorasinska@gmail.com"
 msg.set_content(f"Produkt na który czekasz w rozmiarze {size} znów jest dostępny w sprzedaży!<3\nLINK: {product_url}")
 
-if not option or size not in option:
+if not option.getText() or size not in option.getText():
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
         connection.login(user=MY_EMAIL, password=PASSWORD)
