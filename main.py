@@ -13,11 +13,8 @@ response = requests.get(product_url)
 html = response.text
 
 soup = BeautifulSoup(html, "html.parser")
-
-
 option = soup.select_one("select#inventory_id > option")
 title = soup.select_one("article.article-product > h1")
-print(title)
 
 msg = EmailMessage()
 msg["From"] = MY_EMAIL
