@@ -6,7 +6,7 @@ import os
 
 MY_EMAIL = os.environ["FROM_EMAIL_ADDRESS"]
 PASSWORD = os.environ["FROM_EMAIL_PASSWORD"]
-product_url = "https://ubranesklep.pl/produkt/7740/spodnie-nico"
+product_url = "https://ubranesklep.pl/produkt/7854/spodnie-nico-kokos"
 size = "S"
 
 response = requests.get(product_url)
@@ -14,14 +14,23 @@ html = response.text
 
 soup = BeautifulSoup(html, "html.parser")
 
-option = soup.select_one("select#inventory_id > option").getText()
 
+option = soup.select_one("select#inventory_id > option")
+title = soup.select_one("article.article-product > h1")
+print(title)
 
 msg = EmailMessage()
-msg["Subject"] = "Produkt znów dostępny!"
 msg["From"] = MY_EMAIL
 msg["To"] = "klaudiaorasinska@gmail.com"
-msg.set_content(f"Produkt na który czekasz w rozmiarze {size} znów jest dostępny w sprzedaży!<3\nLINK: {product_url}")
+
+try:
+    subject = "Produkt znów dostępny!"
+    msg.set_content(f"Produkt na który czekasz {title.text} w rozmiarze {size} znów jest dostępny w sprzedaży!<3\nLINK: {product_url}")
+except AttributeError:
+    subject = "Produkt został usunięty!"
+    msg.set_content(f"Produkt na który czekasz {product_url} został usunięty ze strony :(")
+
+msg["Subject"] = subject
 
 if not option or size not in option:
     with smtplib.SMTP("smtp.gmail.com") as connection:
@@ -31,8 +40,6 @@ if not option or size not in option:
             from_addr=MY_EMAIL,
             to_addrs="klaudiaorasinska@gmail.com",
             msg=msg)
-
-
 
 
 
