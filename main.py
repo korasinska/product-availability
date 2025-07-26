@@ -20,23 +20,45 @@ msg = EmailMessage()
 msg["From"] = MY_EMAIL
 msg["To"] = "klaudiaorasinska@gmail.com"
 
-try:
-    subject = "Produkt znów dostępny!"
-    msg.set_content(f"Produkt na który czekasz {title.text} w rozmiarze {size} znów jest dostępny w sprzedaży!<3\nLINK: {product_url}")
-except AttributeError:
-    subject = "Produkt został usunięty!"
+def send_mail_product_not_available(msg):
+    msg["Subject"]= "Produkt został usunięty!"
     msg.set_content(f"Produkt na który czekasz {product_url} został usunięty ze strony :(")
-
-msg["Subject"] = subject
-
-if not option or size not in option:
-    with smtplib.SMTP("smtp.gmail.com") as connection:
+    with smtplib.SMTP("smtp.gmail.com", 587) as connection:
         connection.starttls()
         connection.login(user=MY_EMAIL, password=PASSWORD)
-        connection.send_message(
-            from_addr=MY_EMAIL,
-            to_addrs="klaudiaorasinska@gmail.com",
-            msg=msg)
+        connection.send_message(msg=msg)
+
+def send_mail_product_available(msg):
+    msg["Subject"]  = "Produkt znów dostępny!"
+    msg.set_content(f"Produkt na który czekasz {title.text} w rozmiarze {size} znów jest dostępny w sprzedaży!<3\nLINK: {product_url}")
+    with smtplib.SMTP("smtp.gmail.com", 587) as connection:
+        connection.starttls()
+        connection.login(user=MY_EMAIL, password=PASSWORD)
+        connection.send_message(msg=msg)
+
+def send_mail_size_not_available(msg):
+    msg["Subject"] = "Produkt nie jest dostępny w tym rozmiarze!"
+    msg.set_content(f"Produkt na który czekasz {title.text} nie jest dostępny w rozmiarze {size}.\nLINK: {product_url}")
+    with smtplib.SMTP("smtp.gmail.com", 587) as connection:
+        connection.starttls()
+        connection.login(user=MY_EMAIL, password=PASSWORD)
+        connection.send_message(msg=msg)
+
+
+if title is not None:
+    if option is not None:
+        if size not in option.text:
+            send_mail_product_available(msg)
+        else:
+            send_mail_size_not_available(msg)
+    else:
+         send_mail_product_available(msg)
+else:
+    send_mail_product_not_available(msg)
+
+
+
+
 
 
 
