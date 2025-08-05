@@ -18,7 +18,7 @@ except Exception as e:
 
 soup = BeautifulSoup(html, "html.parser")
 options = soup.select("select#inventory_id > option")
-sizes = [opt.text.strip() for opt in options]
+sizes = [opt.text for opt in options]
 title = soup.select_one("article.article-product > h1")
 
 def send_mail(subject, content):
