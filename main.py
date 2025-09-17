@@ -6,8 +6,8 @@ import os
 
 MY_EMAIL = os.environ["FROM_EMAIL_ADDRESS"]
 PASSWORD = os.environ["FROM_EMAIL_PASSWORD"]
-product_url = "https://ubranesklep.pl/produkt/8741/spodniczko-szorty-aria-czekolada"
-size = "Rozmiar - S"
+product_url = "https://ubranesklep.pl/produkt/8782/sweter-selena-fango"
+size = "Rozmiar - Uniwersalny"
 
 try:
     response = requests.get(product_url)
